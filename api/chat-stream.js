@@ -1,15 +1,15 @@
-import 'dotenv/config';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
-import { RunnablePassthrough, RunnableSequence } from '@langchain/core/runnables';
-import { StringOutputParser } from '@langchain/core/output_parsers';
-import { ChatOpenAI, OpenAIEmbeddings } from '@langchain/openai';
-import { SupabaseVectorStore } from '@langchain/community/vectorstores/supabase';
-import { createClient } from '@supabase/supabase-js';
-import { toDataStreamResponse } from '@ai-sdk/langchain';
+require('dotenv/config');
+const { ChatPromptTemplate } = require('@langchain/core/prompts');
+const { RunnablePassthrough, RunnableSequence } = require('@langchain/core/runnables');
+const { StringOutputParser } = require('@langchain/core/output_parsers');
+const { ChatOpenAI, OpenAIEmbeddings } = require('@langchain/openai');
+const { SupabaseVectorStore } = require('@langchain/community/vectorstores/supabase');
+const { createClient } = require('@supabase/supabase-js');
+const { toDataStreamResponse } = require('@ai-sdk/langchain');
 
 // Optional: Ollama (dev)
-import { ChatOllama } from '@langchain/ollama';
-import { OllamaEmbeddings } from '@langchain/ollama';
+const { ChatOllama } = require('@langchain/ollama');
+const { OllamaEmbeddings } = require('@langchain/ollama');
 
 const PROVIDER = process.env.PROVIDER || 'ollama';
 
@@ -78,7 +78,7 @@ function formatDocs(docs) {
   return docs.map((d) => d.pageContent).join('\n\n');
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS for Vercel
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
