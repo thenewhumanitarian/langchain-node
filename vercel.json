@@ -1,7 +1,21 @@
 {
   "version": 2,
-  "buildCommand": "echo 'No build step required'",
-  "outputDirectory": ".",
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
+  ],
   "functions": {
     "api/chat.js": {
       "maxDuration": 60
@@ -15,30 +29,5 @@
     "api/health.js": {
       "maxDuration": 10
     }
-  },
-  "routes": [
-    {
-      "src": "/api/chat",
-      "dest": "/api/chat.js"
-    },
-    {
-      "src": "/api/chat-stream",
-      "dest": "/api/chat-stream.js"
-    },
-    {
-      "src": "/api/reindex",
-      "dest": "/api/reindex.js"
-    },
-    {
-      "src": "/api/health",
-      "dest": "/api/health.js"
-    },
-    {
-      "src": "/health",
-      "dest": "/api/health.js"
-    }
-  ],
-  "env": {
-    "NODE_ENV": "production"
   }
 }

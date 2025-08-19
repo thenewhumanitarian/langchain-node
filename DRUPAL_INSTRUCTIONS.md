@@ -4,12 +4,19 @@
 
 This document provides instructions for integrating The New Humanitarian's Drupal site with the LangChain AI service deployed on Vercel at `https://tnh-langchain.vercel.app`.
 
-## Service Endpoints
+## Service Information
 
 ### Base URL
 ```
 https://tnh-langchain.vercel.app
 ```
+
+### Landing Page
+Visit `https://tnh-langchain.vercel.app` to see:
+- Interactive API documentation
+- Service health check functionality
+- Endpoint information and examples
+- Authentication details
 
 ### Available Endpoints
 
@@ -287,6 +294,20 @@ function tnh_ai_health_check() {
 }
 ```
 
+### Health Check Response Format
+
+```json
+{
+  "ok": true,
+  "provider": "openai",
+  "port": 8787,
+  "default_model": "llama3",
+  "default_embed_model": "nomic-embed-text",
+  "environment": "development",
+  "timestamp": "2025-01-19T06:27:46.589Z"
+}
+```
+
 ## Configuration
 
 ### Environment Variables
@@ -333,6 +354,27 @@ function tnh_ai_form_tnh_ai_settings_form_alter(&$form, \Drupal\Core\Form\FormSt
   ];
 }
 ```
+
+## AI Model Configuration
+
+### Supported Providers
+
+1. **OpenAI** (Production Recommended)
+   - Model: `gpt-4o-mini`
+   - Embeddings: `text-embedding-3-small`
+   - Requires: `OPENAI_API_KEY`
+
+2. **Ollama** (Local Development)
+   - Model: `llama3`
+   - Embeddings: `nomic-embed-text`
+   - Requires: Local Ollama instance
+
+### Model Selection
+
+The service automatically selects models based on:
+1. `ai_settings` parameter in request (highest priority)
+2. Environment variables (`PROVIDER`, `OPENAI_MODEL`, `OLLAMA_MODEL`)
+3. Default fallbacks
 
 ## Best Practices
 
@@ -384,6 +426,12 @@ Enable debug logging:
 \Drupal::logger('tnh_ai')->debug('Response: @response', ['@response' => json_encode($result)]);
 ```
 
+### Service Status
+
+Check service status:
+- Visit: `https://tnh-langchain.vercel.app` (landing page with health check)
+- API: `https://tnh-langchain.vercel.app/api/health`
+
 ## Migration from Local Development
 
 If migrating from local development:
@@ -393,10 +441,33 @@ If migrating from local development:
 3. Test authentication with production API key
 4. Verify health check endpoint
 
+## Testing
+
+### Quick Test Commands
+
+```bash
+# Health check
+curl https://tnh-langchain.vercel.app/api/health
+
+# Chat test
+curl -X POST https://tnh-langchain.vercel.app/api/chat \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer tnh-langchain-714f5abd7fef62c92e1c166e8b6e36e8" \
+  -d '{"message": "Hello", "conversation_history": []}'
+
+# Streaming test
+curl -X POST https://tnh-langchain.vercel.app/api/chat-stream \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer tnh-langchain-714f5abd7fef62c92e1c166e8b6e36e8" \
+  -d '{"message": "Hello", "conversation_history": []}' \
+  --no-buffer
+```
+
 ## Support
 
 For issues with the LangChain service:
 - Check service health: `https://tnh-langchain.vercel.app/api/health`
+- Visit landing page: `https://tnh-langchain.vercel.app`
 - Review logs in Vercel dashboard
 - Contact development team
 
@@ -404,4 +475,5 @@ For issues with the LangChain service:
 
 **Last Updated**: January 2025  
 **Service Version**: 1.0  
-**Drupal Compatibility**: 9.x, 10.x
+**Drupal Compatibility**: 9.x, 10.x  
+**Service URL**: https://tnh-langchain.vercel.app

@@ -13,7 +13,8 @@
     "vercel-build": "echo 'Vercel build completed'",
     "test": "node test-api.js",
     "test:local": "VERCEL_URL= npm test",
-    "test:vercel": "npm test"
+    "test:vercel": "npm test",
+    "test:deployment": "node test-vercel-deployment.js"
   },
   "dependencies": {
     "@ai-sdk/langchain": "^1.0.15",
