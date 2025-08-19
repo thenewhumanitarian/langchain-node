@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNH LangChain Service</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .endpoint {
+            background: #f5f5f5;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border-left: 4px solid #007cba;
+        }
+        .method {
+            font-weight: bold;
+            color: #007cba;
+        }
+        .url {
+            font-family: monospace;
+            background: #e9ecef;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+        }
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: bold;
+        }
+        .status.online {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .health-check {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .health-check button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .health-check button:hover {
+            background: #005a87;
+        }
+        .health-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            display: none;
+        }
+        .health-result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .health-result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 TNH LangChain Service</h1>
+        <p>The New Humanitarian's AI-powered content assistant</p>
+    </div>
+
+    <div class="health-check">
+        <button onclick="checkHealth()">Check Service Health</button>
+        <div id="healthResult" class="health-result"></div>
+    </div>
+
+    <h2>Available Endpoints</h2>
+    
+    <div class="endpoint">
+        <div><span class="method">POST</span> <span class="url">/api/chat</span></div>
+        <p>Regular chat endpoint with AI assistant. Returns JSON response.</p>
+        <div><strong>Max Duration:</strong> 60s</div>
+    </div>
+
+    <div class="endpoint">
+        <div><span class="method">POST</span> <span class="url">/api/chat-stream</span></div>
+        <p>Streaming chat endpoint for real-time AI responses.</p>
+        <div><strong>Max Duration:</strong> 60s</div>
+    </div>
+
+    <div class="endpoint">
+        <div><span class="method">GET</span> <span class="url">/api/health</span></div>
+        <p>Health check endpoint to verify service status.</p>
+        <div><strong>Max Duration:</strong> 10s</div>
+    </div>
+
+    <div class="endpoint">
+        <div><span class="method">POST</span> <span class="url">/api/reindex</span></div>
+        <p>Reindex vector store with new content (Phase 2).</p>
+        <div><strong>Max Duration:</strong> 300s</div>
+    </div>
+
+    <h2>Authentication</h2>
+    <p>All endpoints require authentication using a Bearer token in the Authorization header:</p>
+    <pre><code>Authorization: Bearer tnh-langchain-714f5abd7fef62c92e1c166e8b6e36e8</code></pre>
+
+    <h2>Documentation</h2>
+    <p>For detailed integration instructions, see <a href="https://github.com/thenewhumanitarian/langchain-node">DRUPAL_INSTRUCTIONS.md</a> in the repository.</p>
+
+    <script>
+        async function checkHealth() {
+            const button = document.querySelector('.health-check button');
+            const result = document.getElementById('healthResult');
+            
+            button.disabled = true;
+            button.textContent = 'Checking...';
+            result.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                
+                if (data.ok) {
+                    result.className = 'health-result success';
+                    result.innerHTML = `
+                        <strong>✅ Service Online</strong><br>
+                        Provider: ${data.provider}<br>
+                        Model: ${data.default_model}<br>
+                        Environment: ${data.environment}<br>
+                        Timestamp: ${data.timestamp}
+                    `;
+                } else {
+                    throw new Error('Service returned error status');
+                }
+            } catch (error) {
+                result.className = 'health-result error';
+                result.innerHTML = `
+                    <strong>❌ Service Offline</strong><br>
+                    Error: ${error.message}
+                `;
+            }
+            
+            result.style.display = 'block';
+            button.disabled = false;
+            button.textContent = 'Check Service Health';
+        }
+    </script>
+</body>
+</html>

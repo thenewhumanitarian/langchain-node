@@ -17,6 +17,9 @@ const app = express();
 app.use(express.json({ limit: '1mb' }));
 app.use(morgan('tiny'));
 
+// Serve static files from public directory
+app.use(express.static('public'));
+
 const PORT = process.env.PORT || 8787;
 const PROVIDER = process.env.PROVIDER || 'ollama';
 
