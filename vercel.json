@@ -1,4 +1,11 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
   "functions": {
     "api/chat.js": {
       "maxDuration": 60
@@ -10,6 +17,9 @@
       "maxDuration": 300
     },
     "api/health.js": {
+      "maxDuration": 10
+    },
+    "api/test.js": {
       "maxDuration": 10
     }
   }
