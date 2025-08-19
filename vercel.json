@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "functions": {
+    "api/chat.js": {
+      "maxDuration": 60
+    },
+    "api/chat-stream.js": {
+      "maxDuration": 60
+    },
+    "api/reindex.js": {
+      "maxDuration": 300
+    },
+    "api/health.js": {
+      "maxDuration": 10
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/chat",
+      "dest": "/api/chat.js"
+    },
+    {
+      "src": "/api/chat-stream",
+      "dest": "/api/chat-stream.js"
+    },
+    {
+      "src": "/api/reindex",
+      "dest": "/api/reindex.js"
+    },
+    {
+      "src": "/api/health",
+      "dest": "/api/health.js"
+    },
+    {
+      "src": "/health",
+      "dest": "/api/health.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

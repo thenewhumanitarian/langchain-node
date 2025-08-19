@@ -1,0 +1,35 @@
+{
+  "name": "tnh-langchain-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "node --env-file=.env --watch src/server.js",
+    "start": "node src/server.js",
+    "build": "echo 'No build step required for Vercel'",
+    "vercel-build": "echo 'Vercel build completed'",
+    "test": "node test-api.js",
+    "test:local": "VERCEL_URL= npm test",
+    "test:vercel": "npm test"
+  },
+  "dependencies": {
+    "@ai-sdk/langchain": "^1.0.15",
+    "@langchain/community": "^0.3.6",
+    "@langchain/core": "^0.3.17",
+    "@langchain/ollama": "^0.1.0",
+    "@langchain/openai": "^0.3.12",
+    "@langchain/textsplitters": "^0.0.3",
+    "@supabase/supabase-js": "^2.45.4",
+    "dotenv": "^17.2.1",
+    "express": "^4.19.2",
+    "langchain": "^0.3.7",
+    "morgan": "^1.10.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@vercel/node": "^3.0.0"
+  }
+}
